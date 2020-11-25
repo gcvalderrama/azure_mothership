@@ -1,0 +1,25 @@
+name: non-production pipeline
+on: 
+  push:
+    paths:
+    - 'nonproduction/**'
+
+jobs:    
+  setup-automate:
+    runs-on: ubuntu-latest
+    steps: 
+      - name: Install dependencies
+        shell: pwsh
+        run: |
+          Install-Module -Name Az -Repository PSGallery -Force
+      - uses: azure/login@v1
+        with:
+          creds: ${{secrets.AZURE_OPT_NONPROD_CREDENTIALS}}
+          enable-AzPSSession: true 
+          allow-no-subscriptions: true
+      - uses: actions/checkout@v2 
+      - name: setup
+        shell: pwsh
+        run: |
+          ./nonproduction/automate/build.ps1
+      

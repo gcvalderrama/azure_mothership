@@ -1,0 +1,6 @@
+name: production pipeline
+on: 
+  push:
+    paths:
+    - 'production/**'
+
