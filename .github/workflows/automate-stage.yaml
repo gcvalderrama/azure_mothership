@@ -48,4 +48,4 @@ jobs:
       
       - name: Azure Assign Identity and Permissions
         run: |
-          az webapp identity assign -g 'mothership-aut-rg' -n dev${{ github.run_number }} --identities  "/subscriptions/652129d9-5c47-49f8-ba58-0137a903edb0/resourcegroups/mothership-aut-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/mothershipuatappidentity"
+          az webapp identity assign -g 'mothership-aut-rg' -n dev${{ github.run_number }} --identities  "/subscriptions/652129d9-5c47-49f8-ba58-0137a903edb0/resourcegroups/mothership-aut-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/mothershipautappidentity"
