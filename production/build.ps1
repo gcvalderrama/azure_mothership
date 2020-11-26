@@ -6,7 +6,7 @@ $tenantId = ($env:credentials | ConvertFrom-Json).tenantId
 $credentials = New-Object System.Management.Automation.PSCredential($clientId, $clientSecret)
 
 $connected = Connect-AzAccount -ServicePrincipal -Credential $credentials -Tenant $tenantId
-
+ 
 $params = @{
     vaults_secrets_name = "mothershipprodsecret"
     registries_registry_name = "mothershipprodregistry"
