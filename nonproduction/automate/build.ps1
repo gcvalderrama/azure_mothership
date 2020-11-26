@@ -6,10 +6,8 @@ $params = @{
 
 Connect-AzAccount
 
-$resourceName = "mothership-rg"
+$resourceName = "mothership-aut-rg"
 $location = "eastus"
-
-Set-AzContext 652129d9-5c47-49f8-ba58-0137a903edb0
 
 New-AzResourceGroup -Name $resourceName -Location $location -Force
 
