@@ -19,7 +19,7 @@ $webappname = 'azure-aut-app-' + [GUID]::NewGuid().ToString('N')
 
 #New-AzAppServicePlan -Name $webappname -Location $location -ResourceGroupName $resourceName -Tier Free
 #New-AzWebApp -Name $webappname -Location $location -AppServicePlan $webappname -ResourceGroupName $resourceName
-docker login mothershipautregistry.azurecr.io  --username $env:REGISTRY_AUT_USERNAME --password $env:REGISTRY_AUT_PASSWORD
+docker login mothershipautregistry.azurecr.io  -u $env:REGISTRY_AUT_USERNAME -p $env:REGISTRY_AUT_PASSWORD
 Push-Location "./AzureApp"
 $tag  = "$env:git_ref-$env:git_number-$env:git_sha"
 docker build -f "./AzureApp/Dockerfile" --force-rm . -t mothershipautregistry.azurecr.io/azureapp:$tag
