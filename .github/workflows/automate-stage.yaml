@@ -10,7 +10,7 @@ env:
   APP_RG: 'mothership-aut-rg'
   APP_LOCATION: 'eastus'
   APP_Subscription: '652129d9-5c47-49f8-ba58-0137a903edb0'
-  APP_TAG: 'V${{github.run_number}}-S${{github.sha}}'
+  APP_TAG: 'AUT-V${{github.run_number}}-S${{github.sha}}'
   
 jobs:    
   automate:
