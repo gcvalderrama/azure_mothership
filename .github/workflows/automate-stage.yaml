@@ -48,7 +48,8 @@ jobs:
           az webapp config appsettings set --resource-group 'mothership-aut-rg' --name dev${{ github.run_number}} --settings ASPNETCORE_ENVIRONMENT="Production"
       
       - name: Azure Assign Identity and Permissions
-        run: |
-          az webapp identity assign -g 'mothership-aut-rg' -n dev${{ github.run_number }} --identities  "/subscriptions/652129d9-5c47-49f8-ba58-0137a903edb0/resourcegroups/mothership-aut-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/mothershipautappidentity"
-          $principalId = az webapp identity assign --name dev45 --resource-group 'mothership-aut-rg' -o tsv --query "principalId" 
+        run: |          
+          principalId = az webapp identity assign --name dev45 --resource-group 'mothership-aut-rg' -o tsv --query "principalId" 
           az keyvault set-policy --name "mothershipautsecret" --object-id $principalId --secret-permissions get list
+
+  # az webapp identity assign -g 'mothership-aut-rg' -n dev${{ github.run_number }} --identities  "/subscriptions/652129d9-5c47-49f8-ba58-0137a903edb0/resourcegroups/mothership-aut-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/mothershipautappidentity"
