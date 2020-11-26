@@ -7,8 +7,8 @@ env:
   credentials: ${{ secrets.AZURE_OPT_NONPROD_CREDENTIALS }}
   registry_user: ${{ secrets.REGISTRY_AUT_USERNAME }}
   registry_pass: ${{ secrets.REGISTRY_AUT_PASSWORD }}
-  app_rg: ${{ 'mothership-aut-rg' }}
-  app_location: ${{ 'eastus' }}
+  app_rg: 'mothership-aut-rg'
+  app_location: 'eastus'
   
 jobs:    
   automate:
@@ -36,5 +36,5 @@ jobs:
         working-directory: AzureApp             
       
       - run: |
-          az appservice plan create --name dev_${{ github.sha }} --resource-group ${{ app_rg }} --is-linux
-          az webapp create --resource-group ${{app_rg}} --plan dev_${{github.sha}} --name dev_${{ github.sha}} --deployment-container-image-name mothershipautregistry.azurecr.io/azureapp:${{github.ref}}-${{github.run_number}}-${{github.sha}}
+          az appservice plan create --name dev_${{ github.sha }} --resource-group 'mothership-aut-rg' --is-linux
+          az webapp create --resource-group 'mothership-aut-rg' --plan dev_${{github.sha}} --name dev_${{ github.sha}} --deployment-container-image-name mothershipautregistry.azurecr.io/azureapp:${{github.ref}}-${{github.run_number}}-${{github.sha}}
