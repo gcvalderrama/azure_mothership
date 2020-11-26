@@ -27,8 +27,8 @@ namespace AzureApp
                     {
                         var builtConfig = config.Build();
 
-                        var azureServiceTokenProvider = new AzureServiceTokenProvider("RunAs=App;AppId=ab5c90ab-4407-4281-a6da-5813ac2dae28");
-
+                        var azureServiceTokenProvider = new AzureServiceTokenProvider();
+                        //RunAs=App;AppId=ab5c90ab-4407-4281-a6da-5813ac2dae28;TenantId={TenantId};AppKey={ClientSecret}
                         var keyVaultClient = new KeyVaultClient(
                             new KeyVaultClient.AuthenticationCallback(
                                 azureServiceTokenProvider.KeyVaultTokenCallback));
