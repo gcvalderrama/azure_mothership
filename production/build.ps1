@@ -1,5 +1,3 @@
-# Install-Module -Name Az -AllowClobber -Scope CurrentUser
-
 $clientId = ($env:credentials | ConvertFrom-Json).clientId
 $clientSecret = ($env:credentials | ConvertFrom-Json).clientSecret | ConvertTo-SecureString -AsPlainText -Force
 $tenantId = ($env:credentials | ConvertFrom-Json).tenantId
