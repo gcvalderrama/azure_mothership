@@ -7,8 +7,8 @@ env:
   credentials: ${{ secrets.AZURE_OPT_NONPROD_CREDENTIALS }}
   registry_user: ${{ secrets.REGISTRY_AUT_USERNAME }}
   registry_pass: ${{ secrets.REGISTRY_AUT_PASSWORD }}
-  app_rg: "mothership-aut-rg"
-  app_location: "eastus"
+  app_rg: ${{'mothership-aut-rg'}}
+  app_location: ${{'eastus'}}
   
 jobs:    
   automate:
