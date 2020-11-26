@@ -5,8 +5,11 @@ on:
     - "features/**"  
 env: 
   credentials: ${{ secrets.AZURE_OPT_NONPROD_CREDENTIALS }}
-  registry_user: ${{ secrets.AZURE_OPT_NONPROD_CREDENTIALS }}
-  registry_pass: ${{ secrets.AZURE_OPT_NONPROD_CREDENTIALS }}
+  registry_user: ${{ secrets.REGISTRY_AUT_USERNAME }}
+  registry_pass: ${{ secrets.REGISTRY_AUT_PASSWORD }}
+  git_ref: ${{ github.ref }}
+  git_number: ${{ github.run_number }}
+  git_sha: ${{ github.sha }}
 jobs:    
   automate:
     runs-on: ubuntu-latest
