@@ -1,8 +1,5 @@
 name: non-production pipeline
-on: 
-  push:
-    paths:
-    - 'nonproduction/**'
+on: push
 
 jobs:    
   setup-automate:
