@@ -21,4 +21,8 @@ jobs:
           username: ${{ secrets.REGISTRY_AUT_USERNAME }}
           password: ${{ secrets.REGISTRY_AUT_PASSWORD }}
 
+      - run: |
+          docker build -f ".\azureapp\dockerfile" --force-rm . -t mothershipautregistry.azurecr.io/azureapp:${{ github.sha }}          
+          docker push mothershipautregistry.azurecr.io/azureapp:${{ github.sha }}
+
     
