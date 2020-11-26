@@ -45,6 +45,7 @@ jobs:
           az webapp create --resource-group 'mothership-aut-rg' --plan dev${{github.run_number}} --name dev${{ github.run_number}} --deployment-container-image-name mothershipautregistry.azurecr.io/azureapp:$APP_TAG
           az webapp config appsettings set --resource-group 'mothership-aut-rg' --name dev${{ github.run_number}} --settings WEBSITES_PORT=80
           az webapp config appsettings set --resource-group 'mothership-aut-rg' --name dev${{ github.run_number}} --settings DB_HOST="mycustomdb"
+          az webapp config appsettings set --resource-group 'mothership-aut-rg' --name dev${{ github.run_number}} --settings ASPNETCORE_ENVIRONMENT="Production"
       
       - name: Azure Assign Identity and Permissions
         run: |
