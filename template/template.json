@@ -33,7 +33,7 @@
                 "tier": "Standard"
             },
             "properties": {
-                "adminUserEnabled": false,
+                "adminUserEnabled": true,
                 "policies": {
                     "quarantinePolicy": {
                         "status": "disabled"
