@@ -6,7 +6,8 @@ on:
         description: 'Log level'     
         required: true
         default: 'warning'
-      
+env: 
+  credentials: ${{ secrets.AZURE_OPT_PROD_CREDENTIALS }}
 jobs:    
   setup-automate:
     runs-on: ubuntu-latest
