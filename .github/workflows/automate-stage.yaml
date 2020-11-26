@@ -6,8 +6,7 @@ on:
 env: 
   credentials: ${{ secrets.AZURE_OPT_NONPROD_CREDENTIALS }}
   registry_user: ${{ secrets.REGISTRY_AUT_USERNAME }}
-  registry_pass: ${{ secrets.REGISTRY_AUT_PASSWORD }}
-  registry_tag: ${{github.ref}}-${{github.run_number}}-${{github.sha}}
+  registry_pass: ${{ secrets.REGISTRY_AUT_PASSWORD }}  
   app_rg: 'mothership-aut-rg'
   app_location: 'eastus'
   
@@ -32,10 +31,11 @@ jobs:
           username: ${{ secrets.REGISTRY_AUT_USERNAME }}
           password: ${{ secrets.REGISTRY_AUT_PASSWORD }}
       - run: |
-          docker build -f "./AzureApp/Dockerfile" --force-rm . -t mothershipautregistry.azurecr.io/azureapp:${{registry_tag}}
-          docker push mothershipautregistry.azurecr.io/azureapp:${{registry_tag}}
+          docker build -f "./AzureApp/Dockerfile" --force-rm . -t mothershipautregistry.azurecr.io/azureapp:${{github.ref}}-${{github.run_number}}-${{github.sha}}
+          docker push mothershipautregistry.azurecr.io/azureapp:${{github.ref}}-${{github.run_number}}-${{github.sha}}
         working-directory: AzureApp             
       
       - run: |
           az appservice plan create --name dev_${{ github.sha }} --resource-group 'mothership-aut-rg' --is-linux
-          az webapp create --resource-group 'mothership-aut-rg' --plan dev_${{github.sha}} --name dev_${{ github.sha}} --deployment-container-image-name mothershipautregistry.azurecr.io/azureapp:${{registry_tag}}
+          az webapp create --resource-group 'mothership-aut-rg' --plan dev_${{github.sha}} --name dev_${{ github.sha}} --deployment-container-image-name mothershipautregistry.azurecr.io/azureapp:${{github.ref}}-${{github.run_number}}-${{github.sha}}
+          az webapp config appsettings set --resource-group 'mothership-aut-rg' --name dev_${{ github.sha}} --settings WEBSITES_PORT=8000
