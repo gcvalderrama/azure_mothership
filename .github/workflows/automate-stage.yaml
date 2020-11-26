@@ -7,6 +7,7 @@ env:
   credentials: ${{ secrets.AZURE_OPT_NONPROD_CREDENTIALS }}
   registry_user: ${{ secrets.REGISTRY_AUT_USERNAME }}
   registry_pass: ${{ secrets.REGISTRY_AUT_PASSWORD }}
+  registry_tag: ${{github.ref}}-${{github.run_number}}-${{github.sha}}
   app_rg: 'mothership-aut-rg'
   app_location: 'eastus'
   
@@ -22,7 +23,7 @@ jobs:
       - name: Login via Az module
         uses: azure/login@v1
         with:
-          creds: ${{secrets.AZURE_CREDENTIALS}}   
+          creds: ${{secrets.AZURE_OPT_NONPROD_CREDENTIALS}}   
 
       - uses: actions/checkout@v2 
       - uses: azure/docker-login@v1
@@ -31,10 +32,10 @@ jobs:
           username: ${{ secrets.REGISTRY_AUT_USERNAME }}
           password: ${{ secrets.REGISTRY_AUT_PASSWORD }}
       - run: |
-          docker build -f "./AzureApp/Dockerfile" --force-rm . -t mothershipautregistry.azurecr.io/azureapp:${{github.ref}}-${{github.run_number}}-${{github.sha}}
-          docker push mothershipautregistry.azurecr.io/azureapp:${{github.ref}}-${{github.run_number}}-${{github.sha}}
+          docker build -f "./AzureApp/Dockerfile" --force-rm . -t mothershipautregistry.azurecr.io/azureapp:${{registry_tag}}
+          docker push mothershipautregistry.azurecr.io/azureapp:${{registry_tag}}
         working-directory: AzureApp             
       
       - run: |
           az appservice plan create --name dev_${{ github.sha }} --resource-group 'mothership-aut-rg' --is-linux
-          az webapp create --resource-group 'mothership-aut-rg' --plan dev_${{github.sha}} --name dev_${{ github.sha}} --deployment-container-image-name mothershipautregistry.azurecr.io/azureapp:${{github.ref}}-${{github.run_number}}-${{github.sha}}
+          az webapp create --resource-group 'mothership-aut-rg' --plan dev_${{github.sha}} --name dev_${{ github.sha}} --deployment-container-image-name mothershipautregistry.azurecr.io/azureapp:${{registry_tag}}
