@@ -16,7 +16,7 @@ $resourceName = "mothership-aut-rg"
 $location = "eastus"
 
 $webappname = 'azure-aut-app-' + [GUID]::NewGuid().ToString('N')
-
+az appservice plan create --name AppSvc-DockerTutorial-plan --resource-group AppSvc-DockerTutorial-rg --is-linux
 #New-AzAppServicePlan -Name $webappname -Location $location -ResourceGroupName $resourceName -Tier Free
 #New-AzWebApp -Name $webappname -Location $location -AppServicePlan $webappname -ResourceGroupName $resourceName
 #$env:REGISTRY_AUT_PASSWORD | docker login mothershipautregistry.azurecr.io -u $env:REGISTRY_AUT_USERNAME --password-stdin 
