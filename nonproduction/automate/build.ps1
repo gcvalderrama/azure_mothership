@@ -6,8 +6,7 @@ $credentials = New-Object System.Management.Automation.PSCredential($clientId, $
 $connected = Connect-AzAccount -ServicePrincipal -Credential $credentials -Tenant $tenantId
 
 Set-AzContext -SubscriptionId "652129d9-5c47-49f8-ba58-0137a903edb0" -Force
-
-
+#
 $params = @{
     vaults_secrets_name = "mothershipautsecret"
     registries_registry_name = "mothershipautregistry"
