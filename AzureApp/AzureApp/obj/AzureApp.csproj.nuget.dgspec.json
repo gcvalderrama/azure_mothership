@@ -43,13 +43,13 @@
       "frameworks": {
         "netcoreapp3.1": {
           "dependencies": {
+            "Azure.Security.KeyVault.Secrets": {
+              "target": "Package",
+              "version": "[4.2.0-beta.3, )"
+            },
             "Microsoft.Azure.AppConfiguration.AspNetCore": {
               "target": "Package",
               "version": "[4.0.0, )"
-            },
-            "Microsoft.Azure.KeyVault": {
-              "target": "Package",
-              "version": "[3.0.5, )"
             },
             "Microsoft.Azure.Services.AppAuthentication": {
               "target": "Package",
@@ -57,7 +57,7 @@
             },
             "Microsoft.Extensions.Configuration.AzureKeyVault": {
               "target": "Package",
-              "version": "[3.1.9, )"
+              "version": "[3.1.10, )"
             },
             "Microsoft.FeatureManagement": {
               "target": "Package",
