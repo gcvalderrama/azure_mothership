@@ -19,10 +19,11 @@ $location = "eastus"
 New-AzResourceGroup -Name $resourceName -Location $location -Force
 
 New-AzResourceGroupDeployment `
--Mode Complete `
+-Mode Incremental `
 -Name OwlveyDeployment `
 -ResourceGroupName $resourceName `
 -TemplateFile ./template/template.json `
 -TemplateParameterObject $params `
 -Force
+
 
