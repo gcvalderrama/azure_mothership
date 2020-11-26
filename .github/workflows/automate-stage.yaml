@@ -30,13 +30,15 @@ jobs:
           login-server: mothershipautregistry.azurecr.io
           username: ${{ secrets.REGISTRY_AUT_USERNAME }}
           password: ${{ secrets.REGISTRY_AUT_PASSWORD }}
-      - run: |
+      - name: Docker Build and Push
+        run: |
           docker build -f "./AzureApp/Dockerfile" --force-rm . -t mothershipautregistry.azurecr.io/azureapp:${{ github.sha }}
           docker push mothershipautregistry.azurecr.io/azureapp:${{ github.sha }}
         working-directory: AzureApp             
       
-      - run: |
+      - name: Azure Web App Setup
+        run: |
           az account set --subscription "652129d9-5c47-49f8-ba58-0137a903edb0"
-          az appservice plan create --name dev_${{ github.sha }} --resource-group 'mothership-aut-rg' --is-linux
-          az webapp create --resource-group 'mothership-aut-rg' --plan dev_${{github.sha}} --name dev_${{ github.sha}} --deployment-container-image-name mothershipautregistry.azurecr.io/azureapp:${{ github.sha }}
-          az webapp config appsettings set --resource-group 'mothership-aut-rg' --name dev_${{ github.sha}} --settings WEBSITES_PORT=8000
+          az appservice plan create --name dev_${{ github.run_number }} --resource-group 'mothership-aut-rg' --is-linux
+          az webapp create --resource-group 'mothership-aut-rg' --plan dev_${{github.run_number}} --name dev_${{ github.run_number}} --deployment-container-image-name mothershipautregistry.azurecr.io/azureapp:${{ github.sha }}
+          az webapp config appsettings set --resource-group 'mothership-aut-rg' --name dev_${{ github.run_number}} --settings WEBSITES_PORT=8000
