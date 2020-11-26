@@ -1,6 +1,7 @@
 name: non-production pipeline
 on: push
-
+env: 
+  credentials: ${{ secrets.AZURE_OPT_NONPROD_CREDENTIALS }}
 jobs:    
   setup-automate:
     runs-on: ubuntu-latest
