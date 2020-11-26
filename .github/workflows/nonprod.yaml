@@ -1,5 +1,9 @@
 name: non-production pipeline
-on: push
+on: 
+  push:
+    paths:
+    - "template"  
+    - "nonproduction"
 env: 
   credentials: ${{ secrets.AZURE_OPT_NONPROD_CREDENTIALS }}
 jobs:    

@@ -1,0 +1,21 @@
+name: automate stage
+on: 
+  workflow_dispatch:
+    inputs:
+      logLevel:
+        description: 'Log level'     
+        required: true
+        default: 'warning'
+env: 
+  credentials: ${{ secrets.AZURE_OPT_NONPROD_CREDENTIALS }}
+jobs:    
+  automate:
+    runs-on: ubuntu-latest
+    steps: 
+      - name: Install dependencies
+        shell: pwsh
+        run: |
+          Install-Module -Name Az -Repository PSGallery -Force
+      - uses: actions/checkout@v2 
+
+    
