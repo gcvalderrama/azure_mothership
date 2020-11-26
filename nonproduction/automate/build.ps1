@@ -23,3 +23,6 @@ Push-Location "./AzureApp"
 docker build -f "./AzureApp/Dockerfile" --force-rm . 
 Pop-Location 
 #docker login mothershipautregistry.azurecr.io  --username mothershipautregistry --password "BtNM/Yi702JrLJUp=jeil5i4xbg/v+bg"
+
+$env:FirstName = 'Trevor'
+

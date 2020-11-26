@@ -20,6 +20,11 @@ jobs:
         shell: pwsh
         run: |
           ./nonproduction/automate/build.ps1
+      - run: |
+          echo $FirstName
+
+
+
 
    
 
