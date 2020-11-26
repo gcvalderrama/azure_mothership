@@ -12,14 +12,29 @@ else{
 }
 
 Set-AzContext -SubscriptionId "652129d9-5c47-49f8-ba58-0137a903edb0" -Force
+#
+$params = @{
+    vaults_secrets_name = "mothershipautsecret"
+    registries_registry_name = "mothershipautregistry"
+    userAssignedIdentities_identity_name = "mothershipuatappidentity"
+}
+
 $resourceName = "mothership-aut-rg"
 $location = "eastus"
 
+New-AzResourceGroup -Name $resourceName -Location $location -Force
+
+New-AzResourceGroupDeployment `
+-Mode Incremental `
+-Name OwlveyDeployment `
+-ResourceGroupName $resourceName `
+-TemplateFile ./template/template.json `
+-TemplateParameterObject $params `
+-Force
+
 $webappname = 'azure-aut-app-' + [GUID]::NewGuid().ToString('N')
 
-#New-AzAppServicePlan -Name $webappname -Location $location -ResourceGroupName $resourceName -Tier Free
-#New-AzWebApp -Name $webappname -Location $location -AppServicePlan $webappname -ResourceGroupName $resourceName
-Push-Location "./AzureApp"
-docker build -f "./AzureApp/Dockerfile" --force-rm . 
-Pop-Location 
-#docker login mothershipautregistry.azurecr.io  --username mothershipautregistry --password "BtNM/Yi702JrLJUp=jeil5i4xbg/v+bg"
+New-AzAppServicePlan -Name $webappname -Location $location -ResourceGroupName $resourceName -Tier Free
+
+New-AzWebApp -Name $webappname -Location $location -AppServicePlan $webappname -ResourceGroupName $resourceName
+

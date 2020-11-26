@@ -5,6 +5,8 @@ on:
     - "features/**"  
 env: 
   credentials: ${{ secrets.AZURE_OPT_NONPROD_CREDENTIALS }}
+  registry_user: ${{ secrets.AZURE_OPT_NONPROD_CREDENTIALS }}
+  registry_pass: ${{ secrets.AZURE_OPT_NONPROD_CREDENTIALS }}
 jobs:    
   automate:
     runs-on: ubuntu-latest
@@ -14,16 +16,11 @@ jobs:
         run: |
           Install-Module -Name Az -Repository PSGallery -Force
       - uses: actions/checkout@v2 
+      - name: setup automate environment
+        shell: pwsh
+        run: |
+          ./nonproduction/automate/build.ps1
 
-      - uses: azure/docker-login@v1
-        with:
-          login-server: mothershipautregistry.azurecr.io
-          username: ${{ secrets.REGISTRY_AUT_USERNAME }}
-          password: ${{ secrets.REGISTRY_AUT_PASSWORD }}
-
-      - run: |
-          docker build -f "./AzureApp/Dockerfile" --force-rm . -t mothershipautregistry.azurecr.io/azureapp:${{ github.ref }}-${{ github.run_number}}-${{ github.sha}}
-          docker push mothershipautregistry.azurecr.io/azureapp:${{ github.ref }}-${{ github.run_number}}-${{ github.sha}}
-        working-directory: AzureApp
+   
 
     
