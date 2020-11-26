@@ -15,13 +15,8 @@ jobs:
         shell: pwsh
         run: |
           Install-Module -Name Az -Repository PSGallery -Force
-      - uses: azure/login@v1
-        with:
-          creds: ${{secrets.AZURE_OPT_PROD_CREDENTIALS}}
-          enable-AzPSSession: true 
-          allow-no-subscriptions: true
       - uses: actions/checkout@v2 
-      - name: setup
+      - name: setup production environment
         shell: pwsh
         run: |
           ./production/build.ps1

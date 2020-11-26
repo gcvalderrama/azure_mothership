@@ -9,14 +9,13 @@ jobs:
         shell: pwsh
         run: |
           Install-Module -Name Az -Repository PSGallery -Force
-      - uses: azure/login@v1
-        with:
-          creds: ${{secrets.AZURE_OPT_NONPROD_CREDENTIALS}}
-          enable-AzPSSession: true 
-          allow-no-subscriptions: true
       - uses: actions/checkout@v2 
-      - name: setup
+      - name: setup automate
         shell: pwsh
         run: |
           ./nonproduction/automate/build.ps1
+      - name: setup uat environment
+        shell: pwsh
+        run: |
+          ./nonproduction/uat/build.ps1
       
