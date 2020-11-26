@@ -11,6 +11,7 @@ env:
   APP_LOCATION: 'eastus'
   APP_Subscription: '652129d9-5c47-49f8-ba58-0137a903edb0'
   APP_TAG: 'AUT-V${{github.run_number}}-S${{github.sha}}'
+  APP_NUMBER: github.run_number
   
 jobs:    
   automate:
@@ -49,7 +50,7 @@ jobs:
       
       - name: Azure Assign Identity and Permissions
         run: |          
-          $principalId = az webapp identity assign --name dev${{ github.run_number }} --resource-group 'mothership-aut-rg' -o tsv --query "principalId" 
+          principalId=$(az webapp identity assign --name dev${{ github.run_number }} --resource-group 'mothership-aut-rg' -o tsv --query "principalId") 
           az keyvault set-policy --name "mothershipautsecret" --object-id $principalId --secret-permissions get list
 
   # az webapp identity assign -g 'mothership-aut-rg' -n dev${{ github.run_number }} --identities  "/subscriptions/652129d9-5c47-49f8-ba58-0137a903edb0/resourcegroups/mothership-aut-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/mothershipautappidentity"
