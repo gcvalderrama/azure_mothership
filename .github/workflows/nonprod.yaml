@@ -1,9 +1,11 @@
 name: non-production pipeline
 on: 
-  push:
-    paths:
-    - "template"  
-    - "nonproduction"
+  workflow_dispatch:
+    inputs:
+      logLevel:
+        description: 'Log level'     
+        required: true
+        default: 'warning'
 env: 
   credentials: ${{ secrets.AZURE_OPT_NONPROD_CREDENTIALS }}
 jobs:    

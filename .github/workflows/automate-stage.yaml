@@ -34,7 +34,7 @@ jobs:
           password: ${{ secrets.REGISTRY_AUT_PASSWORD }}
       - name: Docker Build and Push
         run: |
-          docker build -f "./AzureApp/Dockerfile" --force-rm . -t mothershipautregistry.azurecr.io/azureapp:$APP_TAG
+          docker build -f "./AzureApp/Dockerfile" . -t mothershipautregistry.azurecr.io/azureapp:$APP_TAG
           docker push mothershipautregistry.azurecr.io/azureapp:$APP_TAG
         working-directory: AzureApp             
       
