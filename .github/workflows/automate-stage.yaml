@@ -5,6 +5,13 @@ on:
     - "features/**"  
 env: 
   credentials: ${{ secrets.AZURE_OPT_NONPROD_CREDENTIALS }}
+  registry_user: ${{ secrets.REGISTRY_AUT_USERNAME }}
+  registry_pass: ${{ secrets.REGISTRY_AUT_PASSWORD }}  
+  APP_RG: 'mothership-aut-rg'
+  APP_LOCATION: 'eastus'
+  APP_Subscription: '652129d9-5c47-49f8-ba58-0137a903edb0'
+  APP_TAG: 'V${{github.run_number}}-S${{github.sha}}'
+  
 jobs:    
   automate:
     runs-on: ubuntu-latest
@@ -13,6 +20,32 @@ jobs:
         shell: pwsh
         run: |
           Install-Module -Name Az -Repository PSGallery -Force
-      - uses: actions/checkout@v2 
 
-    
+      - name: Login via Az module
+        uses: azure/login@v1
+        with:
+          creds: ${{secrets.AZURE_OPT_NONPROD_CREDENTIALS}}   
+
+      - uses: actions/checkout@v2 
+      - uses: azure/docker-login@v1
+        with:
+          login-server: mothershipautregistry.azurecr.io
+          username: ${{ secrets.REGISTRY_AUT_USERNAME }}
+          password: ${{ secrets.REGISTRY_AUT_PASSWORD }}
+      - name: Docker Build and Push
+        run: |
+          docker build -f "./AzureApp/Dockerfile" . -t mothershipautregistry.azurecr.io/azureapp:$APP_TAG
+          docker push mothershipautregistry.azurecr.io/azureapp:$APP_TAG
+        working-directory: AzureApp             
+      
+      - name: Azure Web App Setup
+        run: |
+          az account set --subscription "652129d9-5c47-49f8-ba58-0137a903edb0"
+          az appservice plan create --name dev${{ github.run_number }} --resource-group $APP_RG --is-linux
+          az webapp create --resource-group 'mothership-aut-rg' --plan dev${{github.run_number}} --name dev${{ github.run_number}} --deployment-container-image-name mothershipautregistry.azurecr.io/azureapp:$APP_TAG
+          az webapp config appsettings set --resource-group 'mothership-aut-rg' --name dev${{ github.run_number}} --settings WEBSITES_PORT=80
+          az webapp config appsettings set --resource-group 'mothership-aut-rg' --name dev${{ github.run_number}} --settings DB_HOST="mycustomdb"
+      
+      - name: Azure Assign Identity and Permissions
+        run: |
+          az webapp identity assign -g 'mothership-aut-rg' -n dev${{ github.run_number }} --identities  "/subscriptions/652129d9-5c47-49f8-ba58-0137a903edb0/resourcegroups/mothership-aut-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/mothershipuatappidentity"

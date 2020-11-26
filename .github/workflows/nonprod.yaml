@@ -1,11 +1,15 @@
 name: non-production pipeline
 on: 
-  push:
-    paths:
-    - "template"  
-    - "nonproduction"
+  workflow_dispatch:
+    inputs:
+      logLevel:
+        description: 'Log level'     
+        required: true
+        default: 'warning'
+        
 env: 
   credentials: ${{ secrets.AZURE_OPT_NONPROD_CREDENTIALS }}
+
 jobs:    
   setup-automate:
     runs-on: ubuntu-latest
@@ -18,9 +22,9 @@ jobs:
       - name: setup automate
         shell: pwsh
         run: |
-          ./nonproduction/automate/build.ps1
+          ./nonproduction/automate/setup.ps1
       - name: setup uat environment
         shell: pwsh
         run: |
-          ./nonproduction/uat/build.ps1
+          ./nonproduction/uat/setup.ps1
       
