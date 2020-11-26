@@ -13,10 +13,3 @@ $resourceName = "mothership-rg"
 $location = "eastus"
 New-AzResourceGroup -Name $resourceName -Location $location -Force
 
-New-AzResourceGroupDeployment `
--Mode Complete `
--Name mothershipProdDeployment `
--ResourceGroupName $resourceName `
--TemplateFile ./template/template.json `
--TemplateParameterObject $params `
--Force
