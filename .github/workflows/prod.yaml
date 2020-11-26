@@ -20,7 +20,7 @@ jobs:
       - name: setup production environment
         shell: pwsh
         run: |
-          ./production/build.ps1
+          ./production/setup.ps1
       
 
 
