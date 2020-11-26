@@ -7,9 +7,9 @@ env:
   credentials: ${{ secrets.AZURE_OPT_NONPROD_CREDENTIALS }}
   registry_user: ${{ secrets.REGISTRY_AUT_USERNAME }}
   registry_pass: ${{ secrets.REGISTRY_AUT_PASSWORD }}
-  git_ref: ${{ github.ref }}
-  git_number: ${{ github.run_number }}
-  git_sha: ${{ github.sha }}
+  app_rg: mothership-aut-rg
+  app_location: eastus
+  
 jobs:    
   automate:
     runs-on: ubuntu-latest
@@ -18,17 +18,22 @@ jobs:
         shell: pwsh
         run: |
           Install-Module -Name Az -Repository PSGallery -Force
+
+      - name: Login via Az module
+        uses: azure/login@v1
+        with:
+          creds: ${{secrets.AZURE_CREDENTIALS}}   
+          
       - uses: actions/checkout@v2 
-      - name: setup automate environment
-        shell: pwsh
-        run: |
-          ./nonproduction/automate/build.ps1
+      - uses: azure/docker-login@v1
+        with:
+          login-server: mothershipautregistry.azurecr.io
+          username: ${{ secrets.REGISTRY_AUT_USERNAME }}
+          password: ${{ secrets.REGISTRY_AUT_PASSWORD }}
       - run: |
-          echo $FirstName
-
-
-
-
-   
-
-    
+          docker build -f "./AzureApp/Dockerfile" --force-rm . -t mothershipautregistry.azurecr.io/azureapp:${{ github.ref }}-${{ github.run_number}}-${{ github.sha}}
+          docker push mothershipautregistry.azurecr.io/azureapp:${{ github.ref }}-${{ github.run_number}}-${{ github.sha}}
+        working-directory: AzureApp             
+      
+      - run: |
+          az appservice plan create --name dev_${{github.sha}} --resource-group ${{app_rg}} --is-linux
